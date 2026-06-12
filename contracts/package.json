@@ -1,0 +1,22 @@
+{
+  "name": "transparent-crowdfund-contracts",
+  "version": "4.1.0",
+  "private": true,
+  "scripts": {
+    "compile": "hardhat compile",
+    "node": "hardhat node",
+    "deploy:localhost": "hardhat run scripts/deploy-factory.ts --network localhost",
+    "test": "hardhat test",
+    "deploy:sepolia": "hardhat run scripts/deploy-factory.ts --network sepolia"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.18",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}

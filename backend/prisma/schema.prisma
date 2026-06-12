@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  provider      String
+  providerId    String
+  email         String?
+  name          String
+  avatarUrl     String?
+  walletAddress String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  posts         Post[]
+  projects      Project[]
+
+  @@unique([provider, providerId])
+}
+
+model Project {
+  id                Int            @id @default(autoincrement())
+  userId            Int?
+  title             String
+  description       String
+  imageUrl          String?
+  creatorAddress    String
+  contractAddress   String?        @unique
+  chainId           Int            @default(31337)
+  goalEth           String
+  totalFundedEth    String         @default("0")
+  currentMilestone  Int            @default(0)
+  status            String         @default("DRAFT")
+  fundingDeadline   String?
+  votingDurationSec Int?
+  quorumBps         Int            @default(3000)
+  yesThresholdBps   Int            @default(5000)
+  authSignerAddress String?
+  lastSyncedAt      DateTime?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  milestones        Milestone[]
+  pledgeOptions     PledgeOption[]
+  posts             Post[]
+  evidences         Evidence[]
+  user              User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model PledgeOption {
+  id          Int      @id @default(autoincrement())
+  projectId   Int
+  title       String
+  description String?
+  amountEth   String
+  sortOrder   Int
+  createdAt   DateTime @default(now())
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Milestone {
+  id                Int      @id @default(autoincrement())
+  projectId         Int
+  title             String
+  amountEth         String
+  sortOrder         Int
+  evidenceSubmitted Boolean  @default(false)
+  evidenceUri       String?
+  voteStart         String?
+  voteEnd           String?
+  yesVotesEth       String   @default("0")
+  noVotesEth        String   @default("0")
+  released          Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  project           Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Evidence {
+  id             Int      @id @default(autoincrement())
+  projectId      Int
+  milestoneIndex Int
+  uploader        String
+  fileName        String
+  uri             String
+  createdAt       DateTime @default(now())
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  projectId Int
+  userId    Int
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

@@ -1,0 +1,6 @@
+import { CheckCircle2 } from "lucide-react";
+import { formatEth, percent } from "@/lib/utils";
+import type { ChainMilestone, Milestone } from "@/lib/types";
+export function MilestoneTimeline({milestones,chainMilestones=[],currentMilestone=0}:{milestones:Milestone[];chainMilestones?:ChainMilestone[];currentMilestone?:number}){
+ return <div className="timeline">{milestones.map((m,i)=>{const c=chainMilestones[i]; const active=i===currentMilestone; const yes=Number(c?.yesVotes||0); const no=Number(c?.noVotes||0); const total=yes+no; const yp=percent(yes,total); const np=percent(no,total); return <div className={`timelineItem ${active?"active":""}`} key={m.id}><div className="timelineDot">{c?.released?<CheckCircle2 size={20}/>:i+1}</div><div className="timelineBody"><div className="timelineHead"><div><h3>{m.title}</h3><p className="muted">집행 예정 금액 {formatEth(m.amountEth)} ETH</p></div><span className={c?.released?"badge green":active?"badge blue":"badge"}>{c?.released?"집행 완료":active?"현재 단계":"대기"}</span></div>{c?.evidenceURI&&<p className="evidenceText">증빙 URI: {c.evidenceURI}</p>}<div className="voteBar"><div className="voteYes" style={{width:`${yp}%`}}/><div className="voteNo" style={{width:`${np}%`}}/></div><div className="voteMeta"><span>찬성 {formatEth(c?.yesVotes)} ETH</span><span>반대 {formatEth(c?.noVotes)} ETH</span></div></div></div>})}</div>;
+}

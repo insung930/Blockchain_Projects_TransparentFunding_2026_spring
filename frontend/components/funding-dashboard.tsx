@@ -1,0 +1,7 @@
+import { CalendarClock, Landmark, Target, WalletCards } from "lucide-react";
+import { formatEth, percent } from "@/lib/utils";
+import type { ChainState, Project } from "@/lib/types";
+export function FundingDashboard({project,chain}:{project:Project;chain:ChainState|null}){
+ const total=chain?.totalFunded??project.totalFundedEth??"0"; const goal=chain?.goalAmount??project.goalEth; const progress=percent(Number(total),Number(goal)); const deadline=chain?.fundingDeadline?new Date(chain.fundingDeadline*1000).toLocaleString():"-";
+ return <section className="panel dashboardPanel"><div className="sectionHeader compact"><div><p className="eyebrow small">Escrow Dashboard</p><h2>컨트랙트에 보관 중인 펀딩 현황</h2></div><span className="badge blue">On-chain</span></div><div className="fundingHeroLine"><strong>{formatEth(total)} ETH</strong><span>/ {formatEth(goal)} ETH</span></div><div className="progress big"><div className="progressFill" style={{width:`${progress}%`}}/></div><div className="statGrid dashboardStats"><div className="statCard"><Target size={18}/><span>목표 금액</span><strong>{formatEth(goal)} ETH</strong></div><div className="statCard"><Landmark size={18}/><span>현재 단계</span><strong>{Math.min((chain?.currentMilestone||0)+1,project.milestones.length)} / {project.milestones.length}</strong></div><div className="statCard"><WalletCards size={18}/><span>내 후원액</span><strong>{formatEth(chain?.myPledge)} ETH</strong></div><div className="statCard"><CalendarClock size={18}/><span>펀딩 마감</span><strong className="dateStrong">{deadline}</strong></div></div></section>;
+}
