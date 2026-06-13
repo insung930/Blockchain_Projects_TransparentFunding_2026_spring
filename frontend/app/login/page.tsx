@@ -1,3 +1,61 @@
 import { API_URL } from "@/lib/api";
 import { MessageSquareText, PenLine, ShieldCheck } from "lucide-react";
-export default function LoginPage(){ return <section className="formPage"><div className="loginHero panel"><p className="eyebrow">OAuth Login</p><h1>투명 펀딩에 참여하려면 로그인이 필요합니다.</h1><p className="heroText">로그인은 프로젝트 등록, 커뮤니티 작성, 후원 권한 검증에 사용됩니다. 실제 자금 이동은 MetaMask 지갑 서명으로 처리됩니다.</p><div className="loginReasonGrid"><div><PenLine size={20}/><strong>프로젝트 등록</strong><span>회원 전용</span></div><div><MessageSquareText size={20}/><strong>게시글 작성</strong><span>작성자 검증</span></div><div><ShieldCheck size={20}/><strong>후원 권한</strong><span>JWT + Wallet</span></div></div></div><div className="panel loginPanel"><a className="oauthButton google" href={`${API_URL}/auth/google`}>Google로 계속하기</a><a className="oauthButton kakao" href={`${API_URL}/auth/kakao`}>Kakao로 계속하기</a><p className="developerNote">OAuth가 동작하려면 백엔드 .env에 Client ID, Secret, Callback URL이 설정되어야 합니다.</p></div></section> }
+
+export default function LoginPage() {
+  return (
+    <section className="formPage">
+      <div className="loginHero panel">
+        <p className="eyebrow">Login</p>
+
+        <h1
+          style={{
+            fontSize: "clamp(30px, 3.6vw, 44px)",
+            lineHeight: 1.15,
+            letterSpacing: "-0.055em",
+          }}
+        >
+          프로젝트 등록과 후원을 시작해보세요.
+        </h1>
+
+        <p className="heroText">
+          SNS 로그인으로 사용자를 확인하고, 실제 후원과 자금 집행은
+          MetaMask 지갑 서명을 통해 안전하게 진행됩니다.
+        </p>
+
+        <div className="loginReasonGrid">
+          <div>
+            <PenLine size={20} />
+            <strong>프로젝트 등록</strong>
+            <span>로그인 사용자만 가능</span>
+          </div>
+
+          <div>
+            <MessageSquareText size={20} />
+            <strong>커뮤니티 참여</strong>
+            <span>질문과 의견 작성</span>
+          </div>
+
+          <div>
+            <ShieldCheck size={20} />
+            <strong>후원 검증</strong>
+            <span>계정과 지갑 확인</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="panel loginPanel">
+        <a className="oauthButton google" href={`${API_URL}/auth/google`}>
+          Google로 계속하기
+        </a>
+
+        <a className="oauthButton kakao" href={`${API_URL}/auth/kakao`}>
+          Kakao로 계속하기
+        </a>
+
+        <p className="developerNote">
+          로그인 후 프로젝트 등록, 커뮤니티 참여, 후원 진행이 가능합니다.
+        </p>
+      </div>
+    </section>
+  );
+}
